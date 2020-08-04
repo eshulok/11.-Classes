@@ -49,6 +49,8 @@ ducky = Ducks()
 #These will call the overridden functions from the Ducks class
 ducky.speak()
 ducky.move()
+
+#The draw function in not overridden so it will look for the function in the parent class
 ducky.draw()
 
 #Note that objects from other classes with the same parent are not affected
@@ -67,34 +69,35 @@ polly.speak()
 
 class Emus(Birds):
   def __init__(self, x, y):
+    #Create a new Turtle pen
     self.pen = t.Turtle()
+    #Move turtle to start position
     self.pen.up()
     self.pen.goto(x,y)
-  def speak(self):
-    return "Hello!"
   def draw(self):
-    self.pen.down()
-    self.pen.write(self.speak())
-    self.pen.up()
-    self.pen.right(90)
-    self.pen.forward(20)
-    self.pen.left(90)
     self.pen.down()
     self.pen.circle(10)
     self.pen.right(80)
     self.pen.forward(50)
     self.pen.circle(20)
     self.pen.up()
-    self.pen.forward(19)
-    self.pen.left(80)
-    self.pen.forward(19)
+    self.pen.circle(20, 90)
     self.pen.down()
-    self.pen.right(100)
+    self.pen.right(120)
     self.pen.forward(80)
     self.pen.backward(80)
-    self.pen.left(30)
+    self.pen.left(50)
     self.pen.forward(80)
-    
+  def move(self, distance):
+    #First do the parent class move function
+    Birds.move(self)
+    #Now erase the previous emu location
+    self.pen.reset()
+    self.pen.up()
+    #Move the pen the specified distance
+    self.pen.backward(distance)
+    #now draw the emu in the new location
+    self.draw()
     
 emmy = Emus(0,0)
 emmy.speak()
@@ -102,3 +105,5 @@ emmy.draw()
 
 oswald = Emus(-100,0)
 oswald.draw()
+
+emmy.move(50)
