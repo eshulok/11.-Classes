@@ -1,88 +1,93 @@
 import turtle as t
 
-#Let's create some classes
-#Creatures will be the parent class
-class Creatures:
+#Clases can have parent/child relationships
+
+#Creature will be the parent class for several other classes
+class Creature:
+  #pass means we are intentionally not adding any functionality to the class right now
   pass
 
-#People is a child class of Creatures
-class People(Creatures):
-  pass
-
-#Animals is also a child class of Creatures
-class Animals(Creatures):
+#Animals is also a child class of Creature
+#An Animal is a kind of Creature
+class Animal(Creature):
   def speak(self):
     print('animal sound')
   def move(self):
     print('animal on the move')
   def draw(self):
     pass
-  
     
-#Birds is a child class of Animals
-class Birds(Animals):
+#Birds is a child class of Animal
+#Birds are a kind of Animal
+class Bird(Animal):
   def lay_an_egg(self):
     print('I laid an egg!')
   
-#Chickens is a child class of Birds
-class Chickens(Birds):
+#Chicken is a child class of Bird
+class Chicken(Bird):
   pass
 
-#Let's create an object of the class Chickens
-clucky = Chickens()
+#Let's create an object of the class Chicken
+clucky = Chicken()
 
+#Let's put in a print statement to  make it easy to find the output for the following functions
+print('Calling the speak, move and lay_an_egg functions for clucky the Chicken...')
 #We can use functions from its parent class
 clucky.speak()
 clucky.move()
 clucky.lay_an_egg()
 
-class Ducks(Birds):
+class Duck(Bird):
   #Let's override the move and speak functions to be specific to this child class
   def move(self):
     print('swim swim')
   def speak(self):
     print('Quack Quack')
 
-#Create an object of the Ducks class
-ducky = Ducks()
+#Create an object of the Duck class
+ducky = Duck()
 
-#These will call the overridden functions from the Ducks class
+print('Calling the speak and move functions for ducky the duck...')
+#These will call the overridden functions from the Duck class
 ducky.speak()
 ducky.move()
 
-#The draw function in not overridden so it will look for the function in the parent class
+#The draw function in not overridden so it will look for the function in the parent class, which has not been implemented
 ducky.draw()
 
 #Note that objects from other classes with the same parent are not affected
+print("clucky still says: ")
 clucky.speak()
 
 #A child class that uses initializers
-class Parrots(Birds):
+class Parrot(Bird):
   def __init__(self, name):
     self.name = name
   
   def speak(self):
     print("%s wants a cracker!" % self.name)
 
-polly = Parrots("Polly")
+polly = Parrot("Polly")
+print('Calling the speak function for polly the Parrot')
 polly.speak()
 
-class Emus(Birds):
-  def __init__(self, x, y):
+class Emu(Bird):
+  def __init__(self, x, y, color):
     #Create a new Turtle pen
     self.pen = t.Turtle()
     #Move turtle to start position
     self.pen.up()
     self.pen.goto(x,y)
+    self.color = color
+    
   def draw(self):
+    self.pen.color(self.color)
     self.pen.down()
     self.pen.circle(10)
     self.pen.right(80)
     self.pen.forward(50)
-    self.pen.circle(20)
-    self.pen.up()
-    self.pen.circle(20, 90)
-    self.pen.down()
+    #Create a circle with 20 pixel radius and go around 450 degrees, not the default 360
+    self.pen.circle(20, 450)
     self.pen.right(120)
     self.pen.forward(80)
     self.pen.backward(80)
@@ -90,7 +95,7 @@ class Emus(Birds):
     self.pen.forward(80)
   def move(self, distance):
     #First do the parent class move function
-    Birds.move(self)
+    Bird.move(self)
     #Now erase the previous emu location
     self.pen.reset()
     self.pen.up()
@@ -99,11 +104,14 @@ class Emus(Birds):
     #now draw the emu in the new location
     self.draw()
     
-emmy = Emus(0,0)
+emmy = Emu(0,0, 'brown')
+
+print('Calling the speak and draw functions for emmy the Emu')
 emmy.speak()
 emmy.draw()
 
-oswald = Emus(-100,0)
+oswald = Emu(-100,0, 'blue')
 oswald.draw()
 
+print('Calling the move function for emmy the Emu')
 emmy.move(50)
